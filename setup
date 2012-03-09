@@ -2,10 +2,11 @@
 
 config_path = File.expand_path(File.dirname(__FILE__))
   
-`ln -s #{config_path}/.emacs ~/.emacs`
+`ln -s #{config_path}/.emacs ~/.emacs` unless File.exists?(File.expand_path("~/.emacs"))
 `mkdir -p ~/.emacs.d`
 
 Dir.glob(".emacs.d/*").each do |file|
   file = File.basename(file)
+  next if File.exists?(File.expand_path("~/.emacs.d/#{file}"))
   `ln -s #{config_path}/.emacs.d/#{file} ~/.emacs.d/#{file}`
 end
