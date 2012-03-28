@@ -21,6 +21,9 @@
 (toggle-scroll-bar -1)
 (ns-toggle-fullscreen)
 
+;; show time on status bar
+(display-time-mode)
+
 ;; show paren
 (show-paren-mode 1)
 
