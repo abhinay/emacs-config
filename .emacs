@@ -21,6 +21,9 @@
 (toggle-scroll-bar -1)
 (ns-toggle-fullscreen)
 
+;; set my mysql path
+(setq sql-mysql-program "/usr/local/bin/mysql")
+
 ;; show time on status bar
 (display-time-mode)
 
@@ -37,6 +40,11 @@
 ;; hl
 (global-hl-line-mode 1)
 
+;; ido
+(require 'ido)
+(ido-mode t)
+(setq ido-enable-flex-matching t) ;; enable fuzzy matching
+
 ;; adding public packages
 (require 'package)
 (setq package-archives '(("ELPA" . "http://tromey.com/elpa/") 
@@ -49,8 +57,19 @@
 (load-file "~/.emacs.d/themes/color-theme-blackboard.el")
 (color-theme-blackboard)
 
-(autoload 'clojure-mode "clojure-mode" "A major mode for Clojure" t)
-(add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
+;;(autoload 'clojure-mode "clojure-mode" "A major mode for Clojure" t)
+;;(add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
+
+;; Load and configure SLIME
+(add-to-list 'load-path "~/.emacs.d/slime")
+(require 'slime)
+(eval-after-load 'slime '(setq slime-protocol-version 'ignore))
+(slime-setup '(slime-repl))
+ 
+;; Load a major mode for editing Clojure code.
+(add-to-list 'load-path "~/.emacs.d/clojure-mode")
+(require 'clojure-mode)
+(require 'clojure-test-mode) ;; requires slime
 
 (load "~/.emacs.d/flymake-ruby.el")
 
@@ -60,3 +79,9 @@
                          (setq indent-tabs-mode nil)
                          (define-key haml-mode-map "\C-m" 'newline-and-indent)))
 
+
+;; Load and configure SLIME
+(add-to-list 'load-path "~/.emacs.d/slime")
+(require 'slime)
+(eval-after-load 'slime '(setq slime-protocol-version 'ignore))
+(slime-setup '(slime-repl))
