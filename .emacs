@@ -12,6 +12,30 @@
                   (interactive)
                   (other-window -1)))
 
+
+;; Ruby Enahanced Mode
+(add-to-list 'load-path "~/.emacs.d/Enhanced-Ruby-Mode") ; must be added after any path containing old ruby-mode
+(setq enh-ruby-program "~/.rvm/rubies/ruby-1.9.3-p125/bin/ruby") ; so that still works if ruby points to ruby1.8
+(autoload 'ruby-mode "ruby-mode" "Major mode for ruby files" t)
+(add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
+(add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
+
+;; automatic string interpolation brackets
+(defun senny-ruby-interpolate ()
+  "In a double quoted string, interpolate."
+  (interactive)
+  (message "hey")
+  (insert "#")
+  (when (and
+         (looking-back "\".*")
+         (looking-at ".*\""))
+    (insert "{}")
+    (backward-char 1)))
+
+(eval-after-load 'ruby-mode
+  '(progn
+     (define-key ruby-mode-map (kbd "M-3") 'senny-ruby-interpolate)))
+
 ;; Automatic indentation
 (add-hook 'ruby-mode-hook '(lambda ()
       (local-set-key (kbd "RET") 'newline-and-indent)))
@@ -71,7 +95,13 @@
 (require 'clojure-mode)
 (require 'clojure-test-mode) ;; requires slime
 
-(load "~/.emacs.d/flymake-ruby.el")
+(require 'rvm)
+(rvm-use-default) ;; use rvm's default ruby for the current Emacs session 
+
+(add-hook 'ruby-mode-hook
+	            '(lambda () (rvm-activate-corresponding-ruby)))
+
+;;(load "~/.emacs.d/flymake-ruby.el")
 
 (require 'haml-mode)
 (add-hook 'haml-mode-hook
@@ -104,6 +134,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(send-mail-function (quote smtpmail-send-it))
+ '(smtpmail-smtp-server "smtp.gmail.com")
+ '(smtpmail-smtp-service 25)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
