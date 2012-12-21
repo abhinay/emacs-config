@@ -12,6 +12,7 @@
                   (interactive)
                   (other-window -1)))
 
+(global-auto-revert-mode t)
 
 ;; Ruby Enahanced Mode
 (add-to-list 'load-path "~/.emacs.d/Enhanced-Ruby-Mode") ; must be added after any path containing old ruby-mode
